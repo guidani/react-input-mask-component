@@ -51,6 +51,7 @@ export const App = () => {
             name="currency"
             onChange={handleChange}
             mask="currency"
+            prefix="R$"
           />
           <p className="text-left text-xs text-slate-400">
             *apenas números são permitidos
@@ -67,9 +68,10 @@ export default App;
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   mask: "cep" | "cpf" | "currency";
+  prefix?: string;
 }
 
-const CustomInput: FC<InputProps> = ({ mask, ...props }) => {
+const CustomInput: FC<InputProps> = ({ mask, prefix, ...props }) => {
   const handleKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
     if (mask === "cep") {
       cep(e);
@@ -82,11 +84,14 @@ const CustomInput: FC<InputProps> = ({ mask, ...props }) => {
     }
   }, []);
   return (
-    <input
-      {...props}
-      onKeyUp={handleKeyUp}
-      className="w-full border rounded-md border-slate-900 text-2xl pl-4 py-2 "
-    />
+    <div className="flex items-center">
+      {prefix && <span className="text-4xl bg-slate-400 p-1">{prefix}</span>}
+      <input
+        {...props}
+        onKeyUp={handleKeyUp}
+        className="w-full border border-slate-900 text-2xl pl-4 py-2 "
+      />
+    </div>
   );
 };
 
